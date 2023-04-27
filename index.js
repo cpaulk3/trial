@@ -12,33 +12,14 @@ app.use(express.json());
 app.set("view engine", "hbs");
 app.set("views", templatePath);
 app.use(express.urlencoded({extended:false}))
-
+app.set('views', path.join(__dirname, './views'));
+app.use( express.static( "views" ) );
 app.get("/", (req, res) => {
   res.render("login");
 });
 
 app.get("/signup", (req, res) => {
   res.render("signup");
-});
-
-app.get("/addressinvalid", (req, res) => {
-  res.render("addressinvalid");
-});
-
-app.get("/addressvalidated", (req, res) => {
-  res.render("addressvalidated");
-});
-
-app.get("/index", (req, res) => {
-  res.render("index");
-});
-
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
-app.get("/home", (req, res) => {
-  res.render("home");
 });
 
 app.post("/signup", async (req, res) => {
@@ -66,23 +47,24 @@ app.post("/login", async (req, res) => {
         res.send("Wrong Details")
     }  
   });
-
-
+  
 app.post("/home", async (req, res) => {
     try{
     const Address=await address.findOne({street1:req.body.street1, street2:req.body.street2, city:req.body.city, state:req.body.state, zip:req.body.zip}); console.log(Address);  
     
     if(Address.street1===req.body.street1){
-       res.render("addressvalidated")}
+       res.render("home")}
    
     else{
-         res.render("addressinvalid")
+         res.send("Invalid Address")
         }}
     catch(error){
-          res.render("addressinvalid")}})
+          res.send("Wrong Details")}})
  
   
 app.listen(3000, () => {
   console.log("port connected");
 });
+
+
 
