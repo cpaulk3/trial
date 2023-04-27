@@ -21,6 +21,26 @@ app.get("/signup", (req, res) => {
   res.render("signup");
 });
 
+app.get("/addressinvalid", (req, res) => {
+  res.render("addressinvalid");
+});
+
+app.get("/addressvalidated", (req, res) => {
+  res.render("addressvalidated");
+});
+
+app.get("/index", (req, res) => {
+  res.render("index");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/home", (req, res) => {
+  res.render("home");
+});
+
 app.post("/signup", async (req, res) => {
   const data = {
     name: req.body.name,
@@ -46,19 +66,20 @@ app.post("/login", async (req, res) => {
         res.send("Wrong Details")
     }  
   });
-  
+
+
 app.post("/home", async (req, res) => {
     try{
     const Address=await address.findOne({street1:req.body.street1, street2:req.body.street2, city:req.body.city, state:req.body.state, zip:req.body.zip}); console.log(Address);  
     
     if(Address.street1===req.body.street1){
-       res.render("home")}
+       res.render("addressvalidated")}
    
     else{
-         res.send("Invalid Address")
+         res.render("addressinvalid")
         }}
     catch(error){
-          res.send("Wrong Details")}})
+          res.render("addressinvalid")}})
  
   
 app.listen(3000, () => {
